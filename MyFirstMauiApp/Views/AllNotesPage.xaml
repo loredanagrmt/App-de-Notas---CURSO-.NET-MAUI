@@ -4,24 +4,33 @@
              x:Class="MyFirstMauiApp.Views.AllNotesPage"
              Title="AllNotesPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Clicked="Add_Clicked" IconImageSource="{FontImage Glyph='+', Color=White, Size=22}"/>
+        <ToolbarItem Text="Add" Clicked="Add_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="+" Color="White" Size="22" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
-    <CollectionView x:Name="notesCollection"
-                    ItemsSource="{Binding Notes}"
-                    Margin="20"
-                    SelectionMode="Single"
-                    SelectionChanged="notesCollection_SelectionChanged">
-        <CollectionView.ItemsLayout>
-            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10"/> "
-        </CollectionView.ItemsLayout>
 
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <StackLayout>
-                    <Label Text="{Binding Text}" FontSize="22"/>
-                    <Label Text="{Binding Date}" FontSize="14" TextColor="Silver"/>
-                </StackLayout>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+    <VerticalStackLayout Margin="20">
+        <CollectionView x:Name="notesCollection"
+                ItemsSource="{Binding Notes}"
+                Margin="20"
+                SelectionMode="Single"
+                SelectionChanged="notesCollection_SelectionChanged">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout>
+                        <Label Text="{Binding Text}" FontSize="22"/>
+                        <Label Text="{Binding Date}" FontSize="14" TextColor="Silver"/>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+
+    
 </ContentPage>

@@ -1,15 +1,17 @@
 namespace MyFirstMauiApp;
 
+[QueryProperty(nameof(ItemId), nameof(ItemId))]
+
 public partial class NotePage : ContentPage
 {
-    string _fileName = Path.Combine(FileSystem.AppDataDirectory, "notes.txt");
+    public string ItemId { set { LoadNote(value); } }
 
     public NotePage()
     {
         InitializeComponent();
 
         string appDataPath = FileSystem.AppDataDirectory;
-        string randomFile =$"{Path.GetRandomFileName()}.notes.txt"; 
+        string randomFile = $"{Path.GetRandomFileName()}.notes.txt";
         LoadNote(Path.Combine(appDataPath, randomFile));
     }
 
@@ -21,23 +23,35 @@ public partial class NotePage : ContentPage
         if (File.Exists(note.FileName))
         {
             note.Date = File.GetCreationTime(fileName);
-            note.Text= File.ReadAllText(fileName);
+            note.Text = File.ReadAllText(fileName);
         }
 
         BindingContext = note;
     }
 
-    private void SaveButton_Clicked(object sender, EventArgs e)
+    private async void SaveButton_Clicked(object sender, EventArgs e)
     {
-        File.WriteAllText(_fileName, TextEditor.Text);
+        if (BindingContext is Models.Note note)
+        {
+            File.WriteAllText(note.FileName, TextEditor.Text);
+        }
+        await Shell.Current.GoToAsync("..");
     }
 
-    private void DeleteButton_Clicked(object sender, EventArgs e)
+    private async void DeleteButton_Clicked(object sender, EventArgs e)
     {
-        if (File.Exists(_fileName))
+        if (BindingContext is Models.Note note)
         {
-            File.Delete(_fileName);
+            if (File.Exists(note.FileName))
+            {
+                File.Delete(note.FileName);
+
+            }
             TextEditor.Text = string.Empty;
         }
+
+        await Shell.Current.GoToAsync("..");
+
+
     }
 }
